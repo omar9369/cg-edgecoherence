@@ -56,10 +56,7 @@ function Init() {
     view = document.getElementById('view');
     view.width = w;
     view.height = h;
-    //console.log(polygons.convex.vertices[3][1]);
-    
     ctx = view.getContext('2d');
-
     SelectNewPolygon();
 }
 
@@ -85,11 +82,9 @@ function DrawPolygon(polygon) {
     // Step 1: populate ET with edges of polygon
     //console.log(polygon.vertices);
     var i = 0;
-
     var firstVertex = {};
     var secondVertex = {};
     var array_vertices = polygon.vertices;
-    
     for (i = 0; i < array_vertices.length; i++){
         firstVertex = {
             x: array_vertices[i][0],
@@ -100,15 +95,12 @@ function DrawPolygon(polygon) {
                 x: array_vertices[0][0],
                 y: array_vertices[0][1]
             }
-        
         }else{
             secondVertex = {
                 x: array_vertices[i+1][0],
                 y: array_vertices[i+1][1]
             }
-
         }
-        //console.log("Edge: ", firstVertex, secondVertex);
         var index = Math.min(firstVertex.y, secondVertex.y);
         var max_y = Math.max(firstVertex.y, secondVertex.y);
         var deltax;
@@ -122,15 +114,12 @@ function DrawPolygon(polygon) {
             deltax = firstVertex.x - secondVertex.x;
             deltay = firstVertex.y - secondVertex.y;
         }
-        //console.log("Edge: y-min: ", index, 'y-max', max_y);
         var edges = new EdgeEntry(max_y, min_x, deltax, deltay);   
         edge_table[index].InsertEdge(edges);
-        
         if(polygon_y_max < max_y){
             polygon_y_max = max_y
         }
     }
-    console.log(active_list);
     // Step 2: set y to first scan line with an entry in ET
     // loop through all the vertices until you find the smallest y
     var i = 0;
@@ -150,9 +139,7 @@ function DrawPolygon(polygon) {
     //   d) Draw horizontal line for each span (pairs of entries in the AL)
     //   e) Increment y by 1
     //   f) Update x-values for all remaining entries in the AL (increment by 1/m)
-    
     var i;
-    console.log(active_list);
     // Step 3: Repeat until ET[y] is NULL and AL is NULL
     for (i = y; i < polygon_y_max ; i++){
         //   a) Move all entries at ET[y] into AL
@@ -166,17 +153,14 @@ function DrawPolygon(polygon) {
         
         //   c) Remove entries from AL whose ymax equals y
         active_list.RemoveCompleteEdges(i);
-
         var curr = active_list.first_entry;
         //   d) Draw horizontal line for each span (pairs of entries in the AL)
         while (curr != null) {
-            //in draw line it will be curr.x then will jump 2 to get third and fourth instead of 2nd and third
-            
+            //in draw line it will be curr.x then will jump 2 to get third and fourth instead of 2nd and third 
             DrawLine(curr.x, i, curr.next_entry.x, i);
             curr = curr.next_entry.next_entry;
             y++
         }
-
         //DrawLine(active_list.first_entry.next_entry.x, i,active_list.first_entry.x , i);
         
         //   f) Update x-values for all remaining entries in the AL (increment by 1/m)
@@ -190,31 +174,11 @@ function DrawPolygon(polygon) {
             var slope = curr.inv_slope;
             var updated_x = x_value + slope;
             curr.x = updated_x;
-            /*if(curr.next_entry != null){
-                var x_value_next = curr.next_entry.x;
-                var slope_next = curr.next_entry.inv_slope;
-                var updated_next_x = x_value_next + slope_next;
-                curr.next_entry.x = updated_next_x;
-            }*/
             curr = curr.next_entry;
         }
-        
-        // while(curr != null){
-        //     var x_hehe = active_list.first_entry.next_entry.next_entry.x;
-        //     var slope_hehe = active_list.first_entry.next_entry.inv_slope;
-        //     var updated_x_hehe = x_hehe + slope_hehe;
-        //     active_list.first_entry.next_entry.next_entry.x = updated_x_hehe;
-        //     curr = curr.next_entry;
-        // }
-        //console.log(active_list);
-
     }
  
 }
-    
-
-
-
 // SelectNewPolygon(): triggered when new selection in drop down menu is made
 function SelectNewPolygon() {
     var polygon_type = document.getElementById('polygon_type');
