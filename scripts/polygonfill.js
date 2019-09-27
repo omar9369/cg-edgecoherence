@@ -80,7 +80,6 @@ function DrawPolygon(polygon) {
 
     var polygon_y_max = 0;
     // Step 1: populate ET with edges of polygon
-    //console.log(polygon.vertices);
     var i = 0;
     var firstVertex = {};
     var secondVertex = {};
@@ -161,13 +160,7 @@ function DrawPolygon(polygon) {
             curr = curr.next_entry.next_entry;
             y++
         }
-        //DrawLine(active_list.first_entry.next_entry.x, i,active_list.first_entry.x , i);
-        
         //   f) Update x-values for all remaining entries in the AL (increment by 1/m)
-        
-        // while(curr != null){
-            
-        // }
         var curr = active_list.first_entry;
         while(curr != null){
             var x_value = curr.x;
