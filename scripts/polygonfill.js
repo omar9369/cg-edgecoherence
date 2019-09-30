@@ -114,7 +114,11 @@ function DrawPolygon(polygon) {
             deltay = firstVertex.y - secondVertex.y;
         }
         var edges = new EdgeEntry(max_y, min_x, deltax, deltay);   
-        edge_table[index].InsertEdge(edges);
+        if(deltay != 0 || deltax != 0){
+            edge_table[index].InsertEdge(edges);
+        }
+        
+
         if(polygon_y_max < max_y){
             polygon_y_max = max_y
         }
@@ -158,10 +162,10 @@ function DrawPolygon(polygon) {
             //in draw line it will be curr.x then will jump 2 to get third and fourth instead of 2nd and third 
             DrawLine(curr.x, i, curr.next_entry.x, i);
             curr = curr.next_entry.next_entry;
-            y++
+            
         }
         //   f) Update x-values for all remaining entries in the AL (increment by 1/m)
-        var curr = active_list.first_entry;
+        curr = active_list.first_entry;
         while(curr != null){
             var x_value = curr.x;
             var slope = curr.inv_slope;
